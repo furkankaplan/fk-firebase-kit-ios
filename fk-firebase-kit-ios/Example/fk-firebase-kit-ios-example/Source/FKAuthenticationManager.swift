@@ -35,7 +35,7 @@ class FKAuthenticationManager {
         
         PhoneAuthProvider.provider().verifyPhoneNumber("\(phoneCode)\(phone)", uiDelegate: nil) { (verificationID, error) in
             if let error = error {
-                print(error.localizedDescription)
+                debugPrint(error.localizedDescription)
                 
                 onError(error.localizedDescription)
             }
@@ -56,6 +56,8 @@ class FKAuthenticationManager {
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
+                debugPrint(error.localizedDescription)
+                
                 onError(error.localizedDescription)
                 return
             }
