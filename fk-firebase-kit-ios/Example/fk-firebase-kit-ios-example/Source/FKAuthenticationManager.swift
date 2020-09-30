@@ -10,7 +10,10 @@ import Firebase
 
 class FKAuthenticationManager {
     
+    /// Singleton instance variable to access parameter and methods.
     public static let shared = FKAuthenticationManager()
+    
+    /// Permenant key for the data stored in UserDefaults.
     private let AUTH_VERIFICATION_ID = "authVerificationID"
     
     /// languageCode is default nil. Must be set before verifying phoneNumber.
