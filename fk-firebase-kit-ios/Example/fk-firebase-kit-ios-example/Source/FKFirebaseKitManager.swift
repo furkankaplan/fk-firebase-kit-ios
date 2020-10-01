@@ -33,4 +33,24 @@ class FKFirebaseKitManager {
         }
     }
     
+    func request<T: Codable>(get object: T.Type, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+        var innerDatabase: DatabaseReference = self.database
+        
+        for path in endpoint {
+            innerDatabase = innerDatabase.child(path)
+        }
+                
+        innerDatabase.observeSingleEvent(of: .value) { (data) in
+            for item in data.children.allObjects as! [DataSnapshot] {
+                let response = item.value as! [String:Any]
+                
+                let result: T = response.convertTo(object: T.self)
+
+                onSuccess(result)
+            }
+        } withCancel: { (error: Error) in
+            onError(error.localizedDescription)
+        }
+    }
+    
 }
