@@ -17,11 +17,7 @@ class FKFirebaseKitManager {
     private let database: DatabaseReference = Database.database().reference()
     
     func request(set data: Codable, endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
-        var innerDatabase: DatabaseReference = self.database
-        
-        for path in endpoint {
-            innerDatabase = innerDatabase.child(path)
-        }
+        let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
         innerDatabase.setValue(data.toDictionary()) { (error: Error?, reference: DatabaseReference?) in
             if let error = error {
@@ -34,11 +30,7 @@ class FKFirebaseKitManager {
     }
     
     func request<T: Codable>(get object: T.Type, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
-        var innerDatabase: DatabaseReference = self.database
-        
-        for path in endpoint {
-            innerDatabase = innerDatabase.child(path)
-        }
+        let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         innerDatabase.observeSingleEvent(of: .value) { (data) in
             for item in data.children.allObjects as! [DataSnapshot] {
@@ -51,6 +43,16 @@ class FKFirebaseKitManager {
         } withCancel: { (error: Error) in
             onError(error.localizedDescription)
         }
+    }
+    
+    private func configureEndpoint(endpoint: [String]) -> DatabaseReference {
+        var innerDatabase: DatabaseReference = self.database
+        
+        for path in endpoint {
+            innerDatabase = innerDatabase.child(path)
+        }
+        
+        return innerDatabase
     }
     
 }
