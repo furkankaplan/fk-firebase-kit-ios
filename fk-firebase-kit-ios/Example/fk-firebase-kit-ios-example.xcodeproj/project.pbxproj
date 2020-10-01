@@ -21,6 +21,7 @@
 		A94410FF2523C78E00DBE0A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94410FD2523C78E00DBE0A6 /* Main.storyboard */; };
 		A94411012523C78F00DBE0A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A94411002523C78F00DBE0A6 /* Assets.xcassets */; };
 		A94411042523C78F00DBE0A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94411022523C78F00DBE0A6 /* LaunchScreen.storyboard */; };
+		A9512FBB2526817700C0055B /* RequestEventEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9512FBA2526817700C0055B /* RequestEventEnum.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		A94411002523C78F00DBE0A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A94411032523C78F00DBE0A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A94411052523C78F00DBE0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9512FBA2526817700C0055B /* RequestEventEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestEventEnum.swift; sourceTree = "<group>"; };
 		F36C276C92F4CA65F814F398 /* Pods_fk_firebase_kit_ios_example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_fk_firebase_kit_ios_example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 		A93E9BBC2523C87F00B5D045 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A9512FB92526815100C0055B /* Enums */,
 				A93E1BFC2524EE420001B09A /* Protocols */,
 				A93E9BDB2523CF0800B5D045 /* Constants */,
 				A93E9BD62523CDFF00B5D045 /* Models */,
@@ -141,6 +144,14 @@
 				A94411052523C78F00DBE0A6 /* Info.plist */,
 			);
 			path = "fk-firebase-kit-ios-example";
+			sourceTree = "<group>";
+		};
+		A9512FB92526815100C0055B /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				A9512FBA2526817700C0055B /* RequestEventEnum.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		CEA0C724F6BCA6EC1DF13B50 /* Pods */ = {
@@ -269,6 +280,7 @@
 				A93E9BD82523CE1500B5D045 /* FKCurrentUser.swift in Sources */,
 				A93E1BFE2524EE600001B09A /* Initializable.swift in Sources */,
 				A94410FC2523C78E00DBE0A6 /* ViewController.swift in Sources */,
+				A9512FBB2526817700C0055B /* RequestEventEnum.swift in Sources */,
 				A93E9BE12523D41000B5D045 /* FKAuthenticationManager.swift in Sources */,
 				A93E9BBE2523C8E400B5D045 /* FKFirebaseKitManager.swift in Sources */,
 				A94410F82523C78E00DBE0A6 /* AppDelegate.swift in Sources */,

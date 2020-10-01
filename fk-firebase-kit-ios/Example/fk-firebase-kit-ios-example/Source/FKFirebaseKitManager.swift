@@ -29,19 +29,34 @@ class FKFirebaseKitManager {
         }
     }
     
-    func request<T: Codable>(get object: T.Type, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
-        innerDatabase.observeSingleEvent(of: .value) { (data) in
-            for item in data.children.allObjects as! [DataSnapshot] {
-                let response = item.value as! [String:Any]
-                
-                let result: T = response.convertTo(object: T.self)
-
-                onSuccess(result)
+        if type == RequestEventEnum.once {
+            innerDatabase.observeSingleEvent(of: .value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                onError(error.localizedDescription)
             }
-        } withCancel: { (error: Error) in
-            onError(error.localizedDescription)
+        } else if type == RequestEventEnum.listen {
+            innerDatabase.observe(.value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                onError(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    // MARK: - Helper
+    
+    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping((T) -> Void)) where T: Initializable {
+        for item in data.children.allObjects as! [DataSnapshot] {
+            let response = item.value as! [String:Any]
+            
+            let result: T = response.convertTo(object: T.self)
+
+            onSuccess(result)
         }
     }
     
