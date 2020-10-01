@@ -49,7 +49,12 @@ class FKFirebaseKitManager {
         var innerDatabase: DatabaseReference = self.database
         
         for path in endpoint {
-            innerDatabase = innerDatabase.child(path)
+            if !path.isEmpty { // path cannot be empty! If it is, app crashes.
+                innerDatabase = innerDatabase.child(path)
+            } else {
+                debugPrint("Error @ FKFirebaseKitManager because of endpoint creation.")
+                debugPrint("Paths of the endpoint cannot be nil or empty!")
+            }
         }
         
         return innerDatabase
