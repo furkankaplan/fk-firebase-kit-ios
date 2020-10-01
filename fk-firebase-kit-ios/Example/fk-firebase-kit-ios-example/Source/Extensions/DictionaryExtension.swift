@@ -9,7 +9,7 @@ import Foundation
 
 extension Dictionary {
     
-    func convertTo<T2: Codable>(object class: T2.Type) -> T2? where T2: Initializable {
+    func convertTo<T2: Codable>(object class: T2.Type) -> T2 where T2: Initializable {
         do {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
