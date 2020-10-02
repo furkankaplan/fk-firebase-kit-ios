@@ -68,6 +68,18 @@ class FKFirebaseKitManager {
         }
     }
     
+    func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+        let innerDatabase = configureEndpoint(endpoint: endpoint)
+        innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
+            if let error = error {
+                onError(error.localizedDescription)
+                return
+            }
+            
+            onSuccess()
+        }
+    }
+    
     
     // MARK: - Helpers
     
