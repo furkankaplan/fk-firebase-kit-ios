@@ -16,6 +16,8 @@ class FKFirebaseKitManager {
     /// Firebase database shared instance to use it interaction layers of all modules.
     private let database: DatabaseReference = Database.database().reference()
     
+    // MARK: - Requests
+    
     func request(set data: Codable, endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
@@ -47,8 +49,27 @@ class FKFirebaseKitManager {
         }
     }
     
+    func request<T: Codable>(updateChildValues object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+        var requestDictionary: [String : Any] = [:]
+        
+        for item in paths {
+            requestDictionary[item] = object.toDictionary()
+        }
+        
+        if !requestDictionary.isEmpty {
+            self.database.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
+                if let error = error {
+                    onError(error.localizedDescription)
+                    return
+                }
+                
+                onSuccess()
+            }
+        }
+    }
     
-    // MARK: - Helper
+    
+    // MARK: - Helpers
     
     private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping((T) -> Void)) where T: Initializable {
         for item in data.children.allObjects as! [DataSnapshot] {
