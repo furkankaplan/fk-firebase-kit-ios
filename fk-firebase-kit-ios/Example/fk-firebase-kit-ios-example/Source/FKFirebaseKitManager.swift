@@ -49,7 +49,7 @@ class FKFirebaseKitManager {
         }
     }
     
-    func request<T: Codable>(updateChildValues object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var requestDictionary: [String : Any] = [:]
         
         for item in paths {
