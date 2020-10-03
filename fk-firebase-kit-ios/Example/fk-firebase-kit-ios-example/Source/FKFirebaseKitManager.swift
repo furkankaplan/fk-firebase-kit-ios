@@ -18,6 +18,8 @@ class FKFirebaseKitManager {
     
     // MARK: - Requests
     
+    // TODO Add auto-generation key support by childByAutoId with optional parameter
+    // https://firebase.google.com/docs/database/ios/lists-of-data#reading_and_writing_lists
     func request(set data: Codable, endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
@@ -31,7 +33,7 @@ class FKFirebaseKitManager {
         }
     }
     
-    func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
@@ -41,12 +43,16 @@ class FKFirebaseKitManager {
                 onError(error.localizedDescription)
             }
         } else if type == RequestEventEnum.listen {
-            innerDatabase.observe(.value) { (data) in
+            let observer = innerDatabase.observe(.value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
                 onError(error.localizedDescription)
             }
+            
+            return observer
         }
+        
+        return UInt()
     }
     
     func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
@@ -80,6 +86,15 @@ class FKFirebaseKitManager {
         }
     }
     
+    // MARK: - Observers
+    
+    func remove(observer key: UInt) {
+        self.database.removeObserver(withHandle: key)
+    }
+    
+    func logout() {
+        self.database.removeAllObservers()
+    }
     
     // MARK: - Helpers
     
