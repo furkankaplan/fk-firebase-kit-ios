@@ -18,10 +18,12 @@ class FKFirebaseKitManager {
     
     // MARK: - Requests
     
-    // TODO Add auto-generation key support by childByAutoId with optional parameter
-    // https://firebase.google.com/docs/database/ios/lists-of-data#reading_and_writing_lists
-    func request(set data: Codable, endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
-        let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
+    func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+        var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
+        
+        if childByAutoId {
+            innerDatabase = innerDatabase.childByAutoId()
+        }
         
         innerDatabase.setValue(data.toDictionary()) { (error: Error?, reference: DatabaseReference?) in
             if let error = error {
