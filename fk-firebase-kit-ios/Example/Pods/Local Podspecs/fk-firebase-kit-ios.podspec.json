@@ -20,5 +20,14 @@
   },
   "swift_versions": "4.1",
   "source_files": "fk-firebase-kit-ios/Source",
+  "frameworks": "Firebase",
+  "dependencies": {
+    "Firebase/Database": [
+
+    ],
+    "Firebase/Auth": [
+
+    ]
+  },
   "swift_version": "4.1"
 }

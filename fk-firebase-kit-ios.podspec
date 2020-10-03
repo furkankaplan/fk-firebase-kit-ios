@@ -92,6 +92,7 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "fk-firebase-kit-ios/Source"
   #spec.exclude_files = "Classes/Exclude"
+  spec.static_framework = true
 
   # spec.public_header_files = "Classes/**/*.h"
 
