@@ -15,7 +15,7 @@ Pod::Spec.new do |spec|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  spec.name         = "fk-firebase-kit"
+  spec.name         = "fk-firebase-kit-ios"
   spec.version      = "0.1.0"
   spec.summary      = "It's framework simplifying Firebase networking process."
 
