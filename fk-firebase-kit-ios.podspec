@@ -90,9 +90,8 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "fk-firebase-kit-ios/Source"
-  #spec.exclude_files = "Classes/Exclude"
-  spec.static_framework = true
+  spec.source_files  = "fk-firebase-kit-ios/Source", "fk-firebase-kit-ios/**/*.{swift}"
+  spec.exclude_files = "fk-firebase-kit-ios/Example"
 
   # spec.public_header_files = "Classes/**/*.h"
 
@@ -117,7 +116,7 @@ Pod::Spec.new do |spec|
   #  the lib prefix of their name.
   #
 
-  spec.framework  = "Firebase"
+  #spec.framework  = "Firebase"
   # spec.frameworks = "SomeFramework", "AnotherFramework"
 
   # spec.library   = "iconv"
@@ -130,10 +129,9 @@ Pod::Spec.new do |spec|
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
 
-  # spec.requires_arc = true
+  spec.static_framework = true
 
-  # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  spec.dependency "Firebase/Database"
+  spec.dependency "Firebase"
   spec.dependency "Firebase/Auth"
-
+  spec.dependency "Firebase/Database"
 end
