@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double fk_firebase_kit_iosVersionNumber;
-FOUNDATION_EXPORT const unsigned char fk_firebase_kit_iosVersionString[];
+FOUNDATION_EXPORT double FKFirebaseKitVersionNumber;
+FOUNDATION_EXPORT const unsigned char FKFirebaseKitVersionString[];
 

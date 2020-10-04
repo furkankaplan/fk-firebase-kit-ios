@@ -43,7 +43,7 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
-  - fk-firebase-kit-ios (0.1.0):
+  - FKFirebaseKit (0.1.0):
     - Firebase
     - Firebase/Auth
     - Firebase/Database
@@ -84,7 +84,7 @@ PODS:
   - PromisesObjC (1.2.10)
 
 DEPENDENCIES:
-  - fk-firebase-kit-ios (from `../../`)
+  - FKFirebaseKit (from `../../`)
 
 SPEC REPOS:
   trunk:
@@ -104,7 +104,7 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  fk-firebase-kit-ios:
+  FKFirebaseKit:
     :path: "../../"
 
 SPEC CHECKSUMS:
@@ -115,7 +115,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 770ac5958e1372ce67959ae4b4f31d8e127c3ac1
   FirebaseDatabase: 13a865a4b85897462b930eb683bda8f52583713f
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
-  fk-firebase-kit-ios: 7e4c71ae92f9a73dcf75fcb544634e38fbe919c4
+  FKFirebaseKit: 5f248451eaffb360abd282bc01976a3d83c675a5
   GoogleAppMeasurement: 966e88df9d19c15715137bb2ddaf52373f111436
   GoogleDataTransport: b7f406340a291370045a270c599e53c6fa6ec20f
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -124,6 +124,6 @@ SPEC CHECKSUMS:
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
 
-PODFILE CHECKSUM: 2266f80948d790c36ad1161740a383a8ee1c3712
+PODFILE CHECKSUM: 0619318c6b1b91f2844e9a6a1eb1e7c0996d08f6
 
 COCOAPODS: 1.9.3

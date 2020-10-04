@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseDatabase
 
-class FKFirebaseKitManager {
+public class FKFirebaseKitManager {
     
     /// FKChatKitManager singleton object to access instance variable and methods.
     public static let shared: FKFirebaseKitManager = FKFirebaseKitManager()
@@ -18,7 +18,7 @@ class FKFirebaseKitManager {
     
     // MARK: - Requests
     
-    func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
         if childByAutoId {
@@ -35,7 +35,7 @@ class FKFirebaseKitManager {
         }
     }
     
-    func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
@@ -57,7 +57,7 @@ class FKFirebaseKitManager {
         return UInt()
     }
     
-    func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var requestDictionary: [String : Any] = [:]
         
         for item in paths {
@@ -76,7 +76,7 @@ class FKFirebaseKitManager {
         }
     }
     
-    func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
             if let error = error {
@@ -90,11 +90,11 @@ class FKFirebaseKitManager {
     
     // MARK: - Observers
     
-    func remove(observer key: UInt) {
+    public func remove(observer key: UInt) {
         self.database.removeObserver(withHandle: key)
     }
     
-    func logout() {
+    public func logout() {
         self.database.removeAllObservers()
     }
     

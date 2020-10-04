@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-struct FKCurrentUser {
+public struct FKCurrentUser {
     
     public static var user: User?
     

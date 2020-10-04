@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension Encodable {
+public extension Encodable {
     
     /// Converts the encodable object to dictionary type.
-    func toDictionary() -> NSDictionary {
+    public func toDictionary() -> NSDictionary {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = .prettyPrinted
         jsonEncoder.dateEncodingStrategy = .iso8601

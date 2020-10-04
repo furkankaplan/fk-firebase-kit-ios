@@ -1,0 +1,6 @@
+framework module FKFirebaseKit {
+  umbrella header "FKFirebaseKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FKEndpointConstant {
+public struct FKEndpointConstant {
     
     private init() {}
     

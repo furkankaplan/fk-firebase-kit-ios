@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class FKAuthenticationManager {
+public class FKAuthenticationManager {
     
     /// Singleton instance variable to access parameter and methods.
     public static let shared = FKAuthenticationManager()
@@ -18,18 +18,18 @@ class FKAuthenticationManager {
     
     /// languageCode is default nil. Must be set before verifying phoneNumber.
     /// Example languageCode = "uk"
-    var languageCode: String?
+    public var languageCode: String?
     
     /// phoneCode is the spesfic prefix for each country.
     /// phoneCode string must be started with plus(+) sign.
     /// Example phoneCode = "+44"
-    var phoneCode: String?
+    public var phoneCode: String?
     
     /// Default value of verificationID is nil. It's fetched and saved after successfull response of phone number verification.
     /// It's deleted just after successfull response of otp verification.
-    var verificationID: String?
+    public var verificationID: String?
     
-    func verify(phoneNumber: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
+    public func verify(phoneNumber: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let phone = phoneNumber else { return }
         guard let languageCode = languageCode else { return }
         guard let phoneCode = phoneCode else { return }
@@ -51,7 +51,7 @@ class FKAuthenticationManager {
         }
     }
     
-    func verify(otp verificationID: String?, verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
+    public func verify(otp verificationID: String?, verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let verificationID = verificationID else { return }
         guard let verificationCode = verificationCode else { return }
         

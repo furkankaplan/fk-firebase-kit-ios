@@ -6,6 +6,6 @@ target 'fk-firebase-kit-ios-example' do
   use_frameworks!
 
   # Pods for fk-firebase-kit-ios-example
-  pod 'fk-firebase-kit-ios', :path => '../../'
+  pod 'FKFirebaseKit', :path => '../../'
 
 end

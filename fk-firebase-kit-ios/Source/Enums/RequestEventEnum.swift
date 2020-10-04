@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RequestEventEnum {
+public enum RequestEventEnum {
     case once
     case listen
 }

@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31680AA7B01DAE5AA678F6DA /* Pods_fk_firebase_kit_ios_example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BC741E10125F032F4C8941B /* Pods_fk_firebase_kit_ios_example.framework */; };
 		A94410F82523C78E00DBE0A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94410F72523C78E00DBE0A6 /* AppDelegate.swift */; };
 		A94410FA2523C78E00DBE0A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94410F92523C78E00DBE0A6 /* SceneDelegate.swift */; };
 		A94410FC2523C78E00DBE0A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94410FB2523C78E00DBE0A6 /* ViewController.swift */; };
 		A94410FF2523C78E00DBE0A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94410FD2523C78E00DBE0A6 /* Main.storyboard */; };
 		A94411012523C78F00DBE0A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A94411002523C78F00DBE0A6 /* Assets.xcassets */; };
 		A94411042523C78F00DBE0A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94411022523C78F00DBE0A6 /* LaunchScreen.storyboard */; };
-		D062993D06284304807560E5 /* Pods_fk_firebase_kit_ios_example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 941B3A8B3504322451D1A591 /* Pods_fk_firebase_kit_ios_example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		67C716942EDFE63DEAD90777 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fk-firebase-kit-ios-example.release.xcconfig"; path = "Target Support Files/Pods-fk-firebase-kit-ios-example/Pods-fk-firebase-kit-ios-example.release.xcconfig"; sourceTree = "<group>"; };
-		82A841B5A2D2608E1F19E822 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fk-firebase-kit-ios-example.debug.xcconfig"; path = "Target Support Files/Pods-fk-firebase-kit-ios-example/Pods-fk-firebase-kit-ios-example.debug.xcconfig"; sourceTree = "<group>"; };
-		941B3A8B3504322451D1A591 /* Pods_fk_firebase_kit_ios_example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_fk_firebase_kit_ios_example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BC741E10125F032F4C8941B /* Pods_fk_firebase_kit_ios_example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_fk_firebase_kit_ios_example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		882AAA551FC36BDF1042EFA3 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fk-firebase-kit-ios-example.debug.xcconfig"; path = "Target Support Files/Pods-fk-firebase-kit-ios-example/Pods-fk-firebase-kit-ios-example.debug.xcconfig"; sourceTree = "<group>"; };
 		A94410F42523C78E00DBE0A6 /* fk-firebase-kit-ios-example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fk-firebase-kit-ios-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A94410F72523C78E00DBE0A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A94410F92523C78E00DBE0A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -28,6 +27,7 @@
 		A94411002523C78F00DBE0A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A94411032523C78F00DBE0A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A94411052523C78F00DBE0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F056E319F777125DC6580086 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fk-firebase-kit-ios-example.release.xcconfig"; path = "Target Support Files/Pods-fk-firebase-kit-ios-example/Pods-fk-firebase-kit-ios-example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D062993D06284304807560E5 /* Pods_fk_firebase_kit_ios_example.framework in Frameworks */,
+				31680AA7B01DAE5AA678F6DA /* Pods_fk_firebase_kit_ios_example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,7 +48,7 @@
 				A94410F62523C78E00DBE0A6 /* fk-firebase-kit-ios-example */,
 				A94410F52523C78E00DBE0A6 /* Products */,
 				CEA0C724F6BCA6EC1DF13B50 /* Pods */,
-				E9E51BCA28F8C517303CB584 /* Frameworks */,
+				E36FD7170433CA304308CC21 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,16 +77,16 @@
 		CEA0C724F6BCA6EC1DF13B50 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				82A841B5A2D2608E1F19E822 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */,
-				67C716942EDFE63DEAD90777 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */,
+				882AAA551FC36BDF1042EFA3 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */,
+				F056E319F777125DC6580086 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		E9E51BCA28F8C517303CB584 /* Frameworks */ = {
+		E36FD7170433CA304308CC21 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				941B3A8B3504322451D1A591 /* Pods_fk_firebase_kit_ios_example.framework */,
+				2BC741E10125F032F4C8941B /* Pods_fk_firebase_kit_ios_example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -98,11 +98,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A94411082523C78F00DBE0A6 /* Build configuration list for PBXNativeTarget "fk-firebase-kit-ios-example" */;
 			buildPhases = (
-				ACD95C355FD9B66D68E160DC /* [CP] Check Pods Manifest.lock */,
+				CD5ECE8A8DC5E405F80CD786 /* [CP] Check Pods Manifest.lock */,
 				A94410F02523C78E00DBE0A6 /* Sources */,
 				A94410F12523C78E00DBE0A6 /* Frameworks */,
 				A94410F22523C78E00DBE0A6 /* Resources */,
-				520A5E07D219D337E7B8C0FD /* [CP] Embed Pods Frameworks */,
+				4F0699CBF7D8720143BABA21 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -159,7 +159,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		520A5E07D219D337E7B8C0FD /* [CP] Embed Pods Frameworks */ = {
+		4F0699CBF7D8720143BABA21 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -176,7 +176,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-fk-firebase-kit-ios-example/Pods-fk-firebase-kit-ios-example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ACD95C355FD9B66D68E160DC /* [CP] Check Pods Manifest.lock */ = {
+		CD5ECE8A8DC5E405F80CD786 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -351,7 +351,7 @@
 		};
 		A94411092523C78F00DBE0A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82A841B5A2D2608E1F19E822 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */;
+			baseConfigurationReference = 882AAA551FC36BDF1042EFA3 /* Pods-fk-firebase-kit-ios-example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -371,7 +371,7 @@
 		};
 		A944110A2523C78F00DBE0A6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 67C716942EDFE63DEAD90777 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */;
+			baseConfigurationReference = F056E319F777125DC6580086 /* Pods-fk-firebase-kit-ios-example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -1,6 +1,0 @@
-framework module fk_firebase_kit_ios {
-  umbrella header "fk-firebase-kit-ios-umbrella.h"
-
-  export *
-  module * { export * }
-}
