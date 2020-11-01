@@ -51,8 +51,12 @@ public class FKAuthenticationManager {
         }
     }
     
-    public func verify(otp verificationID: String?, verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
-        guard let verificationID = verificationID else { return }
+    public func verify(otp verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
+        guard let verificationID = verificationID else {
+            debugPrint("\(#function) in \(#file) handles verificationID as nil!")
+            return
+        }
+        
         guard let verificationCode = verificationCode else { return }
         
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID, verificationCode: verificationCode)
