@@ -16,7 +16,9 @@ public class FKFirebaseKitManager {
     /// Firebase database shared instance to use it interaction layers of all modules.
     private let database: DatabaseReference = Database.database().reference()
     
-    // MARK: - Requests
+    private init() {/* Instance of class must not be created more than one. */}
+    
+    // MARK: - CRUD Requests
     
     public func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
@@ -78,6 +80,7 @@ public class FKFirebaseKitManager {
     
     public func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
+        
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
             if let error = error {
                 onError(error.localizedDescription)
@@ -85,6 +88,38 @@ public class FKFirebaseKitManager {
             }
             
             onSuccess()
+        }
+    }
+    
+    // MARK: - Listen
+    
+    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+        let innerDatabase = configureEndpoint(endpoint: endpoint)
+        var eventType: DataEventType!
+        
+        switch type {
+        case .added:
+            eventType = .childAdded
+        case .changed:
+            eventType = .childChanged
+        case .removed:
+            eventType = .childRemoved
+        case .moved:
+            eventType = .childMoved
+        }
+        
+        innerDatabase.observe(eventType) { (data) in
+            self.handleResponse(with: data, onSuccess: onSuccess)
+        }
+    }
+    
+    // MARK: - Sort Requests
+    
+    public func order<T: Codable>(by type: OrderByTypeEnum,with key: String, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+        let innerDatabase = configureEndpoint(endpoint: endpoint)
+        
+        innerDatabase.queryOrdered(byChild: key).observe(.value) { (data) in
+            self.handleResponse(with: data, onSuccess: onSuccess)
         }
     }
     
@@ -117,7 +152,7 @@ public class FKFirebaseKitManager {
             if !path.isEmpty { // path cannot be empty! If it is, app crashes.
                 innerDatabase = innerDatabase.child(path)
             } else {
-                debugPrint("Error @ FKFirebaseKitManager because of endpoint creation.")
+                debugPrint("Error @ \(#file) because of endpoint creation.")
                 debugPrint("Paths of the endpoint cannot be nil or empty!")
             }
         }
