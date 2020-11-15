@@ -37,6 +37,7 @@ public class FKFirebaseKitManager {
         }
     }
     
+    @discardableResult
     public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
@@ -93,7 +94,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - Listen
     
-    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
@@ -108,9 +109,11 @@ public class FKFirebaseKitManager {
             eventType = .childMoved
         }
         
-        innerDatabase.observe(eventType) { (data) in
+        let observer = innerDatabase.observe(eventType) { (data) in
             self.handleResponse(with: data, onSuccess: onSuccess)
         }
+        
+        return observer
     }
     
     // MARK: - Sort Requests
