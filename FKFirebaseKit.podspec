@@ -77,7 +77,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/furkankaplan/fk-firebase-kit-ios.git" }
+  spec.source       = { :git => "https://github.com/furkankaplan/fk-firebase-kit-ios.git", :tag => spec.version }
   #spec.source = { :path => "." }
 
   spec.swift_version = "4.1"
