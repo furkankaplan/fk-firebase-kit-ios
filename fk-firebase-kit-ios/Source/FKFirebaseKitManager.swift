@@ -115,9 +115,8 @@ public class FKFirebaseKitManager {
     
     // MARK: - Sort Requests
     
-    public func order<T: Codable>(by type: OrderByTypeEnum,with key: String, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public func orderBy<T: Codable>(key: String, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
-        
         innerDatabase.queryOrdered(byChild: key).observe(.value) { (data) in
             self.handleResponse(with: data, onSuccess: onSuccess)
         }
