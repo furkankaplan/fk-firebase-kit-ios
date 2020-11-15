@@ -37,7 +37,7 @@ public class FKFirebaseKitManager {
         }
     }
     
-    public func request<T: Codable>(get object: T.Type, type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
@@ -93,7 +93,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - Listen
     
-    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
@@ -115,7 +115,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - Sort Requests
     
-    public func order<T: Codable>(by type: OrderByTypeEnum,with key: String, endpoint: String..., onSuccess: @escaping((T) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public func order<T: Codable>(by type: OrderByTypeEnum,with key: String, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         
         innerDatabase.queryOrdered(byChild: key).observe(.value) { (data) in
@@ -135,14 +135,20 @@ public class FKFirebaseKitManager {
     
     // MARK: - Helpers
     
-    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping((T) -> Void)) where T: Initializable {
+    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping(([T]) -> Void)) where T: Initializable {
+        var responseHandler: [T] = []
+        
         for item in data.children.allObjects as! [DataSnapshot] {
             let response = item.value as! [String:Any]
             
             let result: T = response.convertTo(object: T.self)
-
-            onSuccess(result)
+            
+            responseHandler.append(result)
         }
+        
+        debugPrint(responseHandler)
+        
+        onSuccess(responseHandler)
     }
     
     private func configureEndpoint(endpoint: [String]) -> DatabaseReference {
@@ -152,8 +158,7 @@ public class FKFirebaseKitManager {
             if !path.isEmpty { // path cannot be empty! If it is, app crashes.
                 innerDatabase = innerDatabase.child(path)
             } else {
-                debugPrint("Error @ \(#file) because of endpoint creation.")
-                debugPrint("Paths of the endpoint cannot be nil or empty!")
+                debugPrint("Error @ \(#file) because of endpoint creation. Paths of the endpoint cannot be nil or empty!")
             }
         }
         
