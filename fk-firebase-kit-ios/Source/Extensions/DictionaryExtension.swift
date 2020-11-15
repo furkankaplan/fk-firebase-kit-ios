@@ -17,8 +17,6 @@ public extension Dictionary {
             let jsonData = try JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted])
             let decodedData = try decoder.decode(T2.self, from: jsonData)
             
-            debugPrint(decodedData)
-            
             return decodedData
         } catch let error {
             debugPrint(error)
