@@ -80,7 +80,7 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/furkankaplan/fk-firebase-kit-ios.git", :tag => "#{spec.version}"}
   #spec.source = { :path => "." }
 
-  spec.swift_version = "5.1"
+  spec.swift_version = "5"
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -90,9 +90,9 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "fk-firebase-kit-ios/Source/**/*.swift"
+  spec.source_files  = "fk-firebase-kit-ios/Source/**/*"
   spec.exclude_files = "fk-firebase-kit-ios/Example"
-
+  spec.resources = "fk-firebase-kit-ios/Resource"
   # spec.public_header_files = "Classes/**/*.h"
 
 
