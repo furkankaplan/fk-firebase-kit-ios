@@ -92,7 +92,6 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "fk-firebase-kit-ios/Source/**/*"
   spec.exclude_files = "fk-firebase-kit-ios/Example"
-  spec.resources = "fk-firebase-kit-ios/Resource"
   # spec.public_header_files = "Classes/**/*.h"
 
 
@@ -131,7 +130,7 @@ Pod::Spec.new do |spec|
 
   spec.static_framework = true
 
-  spec.dependency "Firebase"
-  spec.dependency "Firebase/Auth"
-  spec.dependency "Firebase/Database"
+  spec.dependency "Firebase", "~> 7.1.0"
+  spec.dependency "Firebase/Auth", "~> 7.1.0"
+  spec.dependency "Firebase/Database", "~> 7.1.0"
 end

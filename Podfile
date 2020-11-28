@@ -6,7 +6,8 @@ target 'fk-firebase-kit-ios' do
   use_frameworks!
 
   # Pods for fk-firebase-kit-ios
-  pod 'Firebase/Database'
-  pod 'Firebase/Auth'
+  pod 'Firebase', '~> 7.1.0'
+  pod 'Firebase/Database', '~> 7.1.0'
+  pod 'Firebase/Auth', '~> 7.1.0'
 
 end
