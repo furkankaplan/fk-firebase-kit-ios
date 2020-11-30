@@ -144,7 +144,7 @@ public class FKFirebaseKitManager {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
-        switch type {
+        switch event {
         case .added:
             eventType = .childAdded
         case .changed:
