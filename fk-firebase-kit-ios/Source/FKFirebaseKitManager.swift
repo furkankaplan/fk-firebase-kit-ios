@@ -16,7 +16,7 @@ public class FKFirebaseKitManager {
     /// Firebase database shared instance to use it interaction layers of all modules.
     private let database: DatabaseReference = Database.database().reference()
     
-    private init() {/* Instance of class must not be created more than one. */}
+    private init() {/* Instance of the class must not be created more than one. */}
     
     // MARK: - CRUD Requests
     
