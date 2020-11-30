@@ -27,11 +27,27 @@ public class FKFirebaseKitManager {
             innerDatabase = innerDatabase.childByAutoId()
         }
         
+        #if DEBUG
+        print("")
+        print("Request ~> \(data.toDictionary())")
+        #endif
+
         innerDatabase.setValue(data.toDictionary()) { (error: Error?, reference: DatabaseReference?) in
             if let error = error {
                 onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
                 return
             }
+            
+            #if DEBUG
+            print("")
+            print("Succeed.")
+            self.endLogMessage()
+            #endif
             
             onSuccess()
         }
@@ -46,12 +62,22 @@ public class FKFirebaseKitManager {
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
                 onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
             }
         } else if type == RequestEventEnum.listen {
             let observer = innerDatabase.observe(.value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
                 onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
             }
             
             return observer
@@ -71,9 +97,19 @@ public class FKFirebaseKitManager {
             self.database.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
                 if let error = error {
                     onError(error.localizedDescription)
+                    #if DEBUG
+                    print("")
+                    print("Response with Error ~> \(error.localizedDescription)")
+                    self.endLogMessage()
+                    #endif
                     return
                 }
                 
+                #if DEBUG
+                print("")
+                print("Succeed.")
+                self.endLogMessage()
+                #endif
                 onSuccess()
             }
         }
@@ -85,9 +121,19 @@ public class FKFirebaseKitManager {
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
             if let error = error {
                 onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
                 return
             }
             
+            #if DEBUG
+            print("")
+            print("Succeed.")
+            self.endLogMessage()
+            #endif
             onSuccess()
         }
     }
@@ -148,7 +194,11 @@ public class FKFirebaseKitManager {
             responseHandler.append(result)
         }
         
-        debugPrint(responseHandler)
+        #if DEBUG
+        print("")
+        print("Response ~> \(responseHandler)")
+        endLogMessage()
+        #endif
         
         onSuccess(responseHandler)
     }
@@ -156,15 +206,33 @@ public class FKFirebaseKitManager {
     private func configureEndpoint(endpoint: [String]) -> DatabaseReference {
         var innerDatabase: DatabaseReference = self.database
         
+        #if DEBUG
+        startLogMessage()
+        print("Endpoint ~> \(endpoint.joined(separator: "/"))")
+        #endif
+        
         for path in endpoint {
             if !path.isEmpty { // path cannot be empty! If it is, app crashes.
                 innerDatabase = innerDatabase.child(path)
             } else {
                 debugPrint("Error @ \(#file) because of endpoint creation. Paths of the endpoint cannot be nil or empty!")
+                endLogMessage()
             }
         }
         
         return innerDatabase
+    }
+    
+    private func startLogMessage() {
+        print("")
+        print("################ FKFirebaseKit Request ################")
+        print("")
+    }
+    
+    private func endLogMessage() {
+        print("")
+        print("################ FKFirebaseKit Request ################")
+        print("")
     }
     
 }
