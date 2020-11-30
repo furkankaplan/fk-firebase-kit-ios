@@ -20,7 +20,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - CRUD Requests
     
-    public func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(set data: Codable, endpoint: [String], childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
         if childByAutoId {
@@ -54,7 +54,7 @@ public class FKFirebaseKitManager {
     }
     
     @discardableResult
-    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
@@ -115,7 +115,7 @@ public class FKFirebaseKitManager {
         }
     }
     
-    public func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(delete endpoint: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
@@ -140,7 +140,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - Listen
     
-    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func listenChild<T: Codable>(forChild event: ListenEventEnum, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
