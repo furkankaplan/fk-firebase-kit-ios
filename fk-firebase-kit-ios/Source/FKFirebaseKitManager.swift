@@ -23,6 +23,7 @@ public class FKFirebaseKitManager {
     public func request(set data: Codable, endpoint: [String], childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
+                
         if childByAutoId {
             innerDatabase = innerDatabase.childByAutoId()
         }
@@ -112,6 +113,7 @@ public class FKFirebaseKitManager {
                 #endif
                 onSuccess()
             }
+            
         }
     }
     
@@ -162,13 +164,106 @@ public class FKFirebaseKitManager {
         return observer
     }
     
-    // MARK: - Sort Requests
+    // MARK: - Sort & Filter Requests
     
-    public func orderBy<T: Codable>(key: String, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public enum FilterTypeEnum {
+        case prefix(String)
+        case starting(Any)
+        case ending(Any)
+        case equal(Any)
+        case startingAndEnding(Any, Any)
+    }
+    
+    @discardableResult
+    public func list<T: Codable>(orderKey: String? = nil, filterBy filteredType: FilterTypeEnum? = nil, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
-        innerDatabase.queryOrdered(byChild: key).observe(.value) { (data) in
-            self.handleResponse(with: data, onSuccess: onSuccess)
+        
+        var query: DatabaseQuery?
+        
+        if let orderKey = orderKey {
+            #if DEBUG
+            print("")
+            print("Query ordered with \(orderKey)")
+            #endif
+            query = innerDatabase.queryOrdered(byChild: orderKey)
         }
+    
+        if let filteredType = filteredType {
+            switch filteredType {
+            case .prefix(let value):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: value).queryEnding(atValue: value + "\u{F8FF}")
+                    #if DEBUG
+                    print("")
+                    print("Query filtered with prefix \(value)")
+                    #endif
+                }
+                break
+            case .starting(let value):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: value)
+                    #if DEBUG
+                    print("")
+                    print("Query filtered with starting at value of \(value)")
+                    #endif
+                }
+                break
+            case .ending(let value):
+                if let _ = query {
+                    query = query!.queryEnding(atValue: value )
+                    #if DEBUG
+                    print("")
+                    print("Query filtered with match case of \(value)")
+                    #endif
+                }
+                break
+            case .equal(let value):
+                if let _ = query {
+                    query = query!.queryEqual(toValue: value)
+                  
+                }
+                break
+            case .startingAndEnding(let startingValue, let endingValue):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: startingValue).queryEnding(atValue: endingValue)
+                    #if DEBUG
+                    print("")
+                    print("Query filtered with starting and ending at values for \(startingValue),\( endingValue), relatively")
+                    #endif
+                }
+                break
+            }
+        }
+        
+        guard query != nil else { return UInt() }
+        
+        if type == RequestEventEnum.listen {
+            let observer = query!.observe(.value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
+            }
+            
+            return observer
+        } else if type == RequestEventEnum.once {
+            query!.observeSingleEvent(of: .value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                onError(error.localizedDescription)
+                #if DEBUG
+                print("")
+                print("Response with Error ~> \(error.localizedDescription)")
+                self.endLogMessage()
+                #endif
+            }
+        }
+        
+        return UInt()
     }
     
     // MARK: - Observers
