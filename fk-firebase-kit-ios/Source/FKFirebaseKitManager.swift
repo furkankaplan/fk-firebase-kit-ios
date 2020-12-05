@@ -22,7 +22,6 @@ public class FKFirebaseKitManager {
     
     public func request(set data: Codable, endpoint: [String], childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
-        
                 
         if childByAutoId {
             innerDatabase = innerDatabase.childByAutoId()
@@ -87,15 +86,11 @@ public class FKFirebaseKitManager {
         return UInt()
     }
     
-    public func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
-        var requestDictionary: [String : Any] = [:]
+    public func request<T: Codable>(update object: T, endpoint: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+        let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
-        for item in paths {
-            requestDictionary[item] = object.toDictionary()
-        }
-        
-        if !requestDictionary.isEmpty {
-            self.database.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
+        if let requestDictionary = object.toDictionary() as? [AnyHashable : Any] {
+            innerDatabase.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
                 if let error = error {
                     onError(error.localizedDescription)
                     #if DEBUG
@@ -113,8 +108,8 @@ public class FKFirebaseKitManager {
                 #endif
                 onSuccess()
             }
-            
         }
+
     }
     
     public func request(delete endpoint: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
