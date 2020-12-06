@@ -217,6 +217,11 @@ public class FKFirebaseKitManager {
                     query = query!.queryEqual(toValue: value)
                   
                 }
+                
+                #if DEBUG
+                print("")
+                print("Query filtered with match case of \(value)")
+                #endif
                 break
             case .startingAndEnding(let startingValue, let endingValue):
                 if let _ = query {
