@@ -170,17 +170,24 @@ public class FKFirebaseKitManager {
     }
     
     @discardableResult
-    public func list<T: Codable>(orderKey: String? = nil, filterBy filteredType: FilterTypeEnum? = nil, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func list<T: Codable>(key: String?, filterBy filteredType: FilterTypeEnum?, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
+        
+        guard key != nil && !(key ?? "").isEmpty && filteredType != nil else {
+            print("Request with Error ~> Query parameters both key and filter type must not be empty!")
+            endLogMessage()
+            onError("Query parameters both key and filter type must not be empty!")
+            return UInt()
+        }
         
         var query: DatabaseQuery?
         
-        if let orderKey = orderKey {
+        if let key = key {
             #if DEBUG
             print("")
-            print("Query ordered with \(orderKey)")
+            print("Query ordered with \(key)")
             #endif
-            query = innerDatabase.queryOrdered(byChild: orderKey)
+            query = innerDatabase.queryOrdered(byChild: key)
         }
     
         if let filteredType = filteredType {
@@ -188,49 +195,58 @@ public class FKFirebaseKitManager {
             case .prefix(let value):
                 if let _ = query {
                     query = query!.queryStarting(atValue: value).queryEnding(atValue: value + "\u{F8FF}")
+                    
                     #if DEBUG
                     print("")
                     print("Query filtered with prefix \(value)")
                     #endif
                 }
+                
+               
                 break
             case .starting(let value):
                 if let _ = query {
                     query = query!.queryStarting(atValue: value)
+                    
                     #if DEBUG
                     print("")
-                    print("Query filtered with starting at value of \(value)")
+                    print("Query filtered with starting at value at \(value)")
                     #endif
                 }
+                
                 break
             case .ending(let value):
                 if let _ = query {
                     query = query!.queryEnding(atValue: value )
+                    
+                    #if DEBUG
+                    print("")
+                    print("Query filtered with ending at value at \(value)")
+                    #endif
+                }
+                                
+                break
+            case .equal(let value):
+                if let _ = query {
+                    query = query!.queryEqual(toValue: value)
+                    
                     #if DEBUG
                     print("")
                     print("Query filtered with match case of \(value)")
                     #endif
                 }
-                break
-            case .equal(let value):
-                if let _ = query {
-                    query = query!.queryEqual(toValue: value)
-                  
-                }
                 
-                #if DEBUG
-                print("")
-                print("Query filtered with match case of \(value)")
-                #endif
                 break
             case .startingAndEnding(let startingValue, let endingValue):
                 if let _ = query {
                     query = query!.queryStarting(atValue: startingValue).queryEnding(atValue: endingValue)
+                    
                     #if DEBUG
                     print("")
                     print("Query filtered with starting and ending at values for \(startingValue),\( endingValue), relatively")
                     #endif
                 }
+                
                 break
             }
         }
