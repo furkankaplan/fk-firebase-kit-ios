@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A94410DF2523C64700DBE0A6 /* fk_firebase_kit_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = A94410DD2523C64700DBE0A6 /* fk_firebase_kit_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A96DD4EC257BFDC000F05915 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96DD4EB257BFDC000F05915 /* ResponseModel.swift */; };
 		A9BEECA22528BF270096411E /* FKCurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC952528BF270096411E /* FKCurrentUser.swift */; };
 		A9BEECA32528BF270096411E /* FKAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC962528BF270096411E /* FKAuthenticationManager.swift */; };
 		A9BEECA42528BF270096411E /* FKFirebaseKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC972528BF270096411E /* FKFirebaseKitManager.swift */; };
@@ -26,6 +27,7 @@
 		A94410DA2523C64700DBE0A6 /* fk_firebase_kit_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fk_firebase_kit_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A94410DD2523C64700DBE0A6 /* fk_firebase_kit_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fk_firebase_kit_ios.h; sourceTree = "<group>"; };
 		A94410DE2523C64700DBE0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A96DD4EB257BFDC000F05915 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 		A9BEEC952528BF270096411E /* FKCurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKCurrentUser.swift; sourceTree = "<group>"; };
 		A9BEEC962528BF270096411E /* FKAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKAuthenticationManager.swift; sourceTree = "<group>"; };
 		A9BEEC972528BF270096411E /* FKFirebaseKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKFirebaseKitManager.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				A9BEEC952528BF270096411E /* FKCurrentUser.swift */,
+				A96DD4EB257BFDC000F05915 /* ResponseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				A9BFDFFA2555EE200043B010 /* ListenEventEnum.swift in Sources */,
 				A9BEECA72528BF270096411E /* DictionaryExtension.swift in Sources */,
 				A9BEECA62528BF270096411E /* EncodableExtension.swift in Sources */,
+				A96DD4EC257BFDC000F05915 /* ResponseModel.swift in Sources */,
 				A9BEECA52528BF270096411E /* FKEndpointConstant.swift in Sources */,
 				A9BEECA82528BF270096411E /* Initializable.swift in Sources */,
 			);

@@ -54,7 +54,7 @@ public class FKFirebaseKitManager {
     }
     
     @discardableResult
-    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
@@ -137,7 +137,7 @@ public class FKFirebaseKitManager {
     
     // MARK: - Listen
     
-    public func listenChild<T: Codable>(forChild event: ListenEventEnum, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func listenChild<T: Codable>(forChild event: ListenEventEnum, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
@@ -170,7 +170,7 @@ public class FKFirebaseKitManager {
     }
     
     @discardableResult
-    public func list<T: Codable>(orderKey: String? = nil, filterBy filteredType: FilterTypeEnum? = nil, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func list<T: Codable>(orderKey: String? = nil, filterBy filteredType: FilterTypeEnum? = nil, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         
         var query: DatabaseQuery?
@@ -273,15 +273,14 @@ public class FKFirebaseKitManager {
     
     // MARK: - Helpers
     
-    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping(([T]) -> Void)) where T: Initializable {
-        var responseHandler: [T] = []
+    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping(([ResponseModel<T>]) -> Void)) where T: Initializable {
+        var responseHandler: [ResponseModel<T>] = []
         
         for item in data.children.allObjects as! [DataSnapshot] {
             let response = item.value as! [String:Any]
-            
             let result: T = response.convertTo(object: T.self)
             
-            responseHandler.append(result)
+            responseHandler.append(ResponseModel(key: item.key, result: result))
         }
         
         #if DEBUG
