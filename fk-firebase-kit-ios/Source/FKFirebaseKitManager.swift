@@ -162,8 +162,7 @@ public class FKFirebaseKitManager {
                     
                     Logger.infoLog(message: "Query filtered with prefix \(value)")
                 }
-                
-               
+
                 break
             case .starting(let value):
                 if let _ = query {
@@ -225,12 +224,12 @@ public class FKFirebaseKitManager {
     
     // MARK: - Observers
     
-    public func remove(observer key: UInt) {
-        self.database.removeObserver(withHandle: key)
+    public func remove(observer key: UInt, for endpoint: [String]) {
+        configureEndpoint(endpoint: endpoint).removeObserver(withHandle: key)
     }
     
-    public func logout() {
-        self.database.removeAllObservers()
+    public func removeAll(observer endpoint: [String]) {
+        configureEndpoint(endpoint: endpoint).removeAllObservers()
     }
     
     // MARK: - Helpers
