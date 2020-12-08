@@ -27,27 +27,17 @@ public class FKFirebaseKitManager {
             innerDatabase = innerDatabase.childByAutoId()
         }
         
-        #if DEBUG
-        print("")
-        print("Request ~> \(data.toDictionary())")
-        #endif
-
+        Logger.requestLog(requestDictionary: data.toDictionary())
+        
         innerDatabase.setValue(data.toDictionary()) { (error: Error?, reference: DatabaseReference?) in
             if let error = error {
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
+                
                 return
             }
             
-            #if DEBUG
-            print("")
-            print("Succeed.")
-            self.endLogMessage()
-            #endif
+            Logger.succeed()
             
             onSuccess()
         }
@@ -61,23 +51,15 @@ public class FKFirebaseKitManager {
             innerDatabase.observeSingleEvent(of: .value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
             }
         } else if type == RequestEventEnum.listen {
             let observer = innerDatabase.observe(.value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
             }
             
             return observer
@@ -92,20 +74,13 @@ public class FKFirebaseKitManager {
         if let requestDictionary = object.toDictionary() as? [AnyHashable : Any] {
             innerDatabase.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
                 if let error = error {
+                    Logger.errorLog(message: error.localizedDescription)
                     onError(error.localizedDescription)
-                    #if DEBUG
-                    print("")
-                    print("Response with Error ~> \(error.localizedDescription)")
-                    self.endLogMessage()
-                    #endif
                     return
                 }
                 
-                #if DEBUG
-                print("")
-                print("Succeed.")
-                self.endLogMessage()
-                #endif
+                Logger.succeed()
+                
                 onSuccess()
             }
         }
@@ -117,20 +92,13 @@ public class FKFirebaseKitManager {
         
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
             if let error = error {
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
                 return
             }
-            
-            #if DEBUG
-            print("")
-            print("Succeed.")
-            self.endLogMessage()
-            #endif
+
+            Logger.succeed()
+
             onSuccess()
         }
     }
@@ -174,8 +142,7 @@ public class FKFirebaseKitManager {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         
         guard key != nil && !(key ?? "").isEmpty && filteredType != nil else {
-            print("Request with Error ~> Query parameters both key and filter type must not be empty!")
-            endLogMessage()
+            Logger.errorLog(message: "Query parameters both key and filter type must not be empty!")
             onError("Query parameters both key and filter type must not be empty!")
             return UInt()
         }
@@ -183,10 +150,7 @@ public class FKFirebaseKitManager {
         var query: DatabaseQuery?
         
         if let key = key {
-            #if DEBUG
-            print("")
-            print("Query ordered with \(key)")
-            #endif
+            Logger.infoLog(message: "Query ordered with \(key)")
             query = innerDatabase.queryOrdered(byChild: key)
         }
     
@@ -196,10 +160,7 @@ public class FKFirebaseKitManager {
                 if let _ = query {
                     query = query!.queryStarting(atValue: value).queryEnding(atValue: value + "\u{F8FF}")
                     
-                    #if DEBUG
-                    print("")
-                    print("Query filtered with prefix \(value)")
-                    #endif
+                    Logger.infoLog(message: "Query filtered with prefix \(value)")
                 }
                 
                
@@ -207,11 +168,8 @@ public class FKFirebaseKitManager {
             case .starting(let value):
                 if let _ = query {
                     query = query!.queryStarting(atValue: value)
-                    
-                    #if DEBUG
-                    print("")
-                    print("Query filtered with starting at value at \(value)")
-                    #endif
+          
+                    Logger.infoLog(message: "Query filtered with starting at value at \(value)")
                 }
                 
                 break
@@ -219,10 +177,7 @@ public class FKFirebaseKitManager {
                 if let _ = query {
                     query = query!.queryEnding(atValue: value )
                     
-                    #if DEBUG
-                    print("")
-                    print("Query filtered with ending at value at \(value)")
-                    #endif
+                    Logger.infoLog(message: "Query filtered with ending at value at \(value)")
                 }
                                 
                 break
@@ -230,10 +185,7 @@ public class FKFirebaseKitManager {
                 if let _ = query {
                     query = query!.queryEqual(toValue: value)
                     
-                    #if DEBUG
-                    print("")
-                    print("Query filtered with match case of \(value)")
-                    #endif
+                    Logger.infoLog(message: "Query filtered with match case of \(value)")
                 }
                 
                 break
@@ -241,10 +193,7 @@ public class FKFirebaseKitManager {
                 if let _ = query {
                     query = query!.queryStarting(atValue: startingValue).queryEnding(atValue: endingValue)
                     
-                    #if DEBUG
-                    print("")
-                    print("Query filtered with starting and ending at values for \(startingValue),\( endingValue), relatively")
-                    #endif
+                    Logger.infoLog(message: "Query filtered with starting and ending at values for \(startingValue),\( endingValue), relatively")
                 }
                 
                 break
@@ -257,12 +206,8 @@ public class FKFirebaseKitManager {
             let observer = query!.observe(.value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
             }
             
             return observer
@@ -270,12 +215,8 @@ public class FKFirebaseKitManager {
             query!.observeSingleEvent(of: .value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
-                #if DEBUG
-                print("")
-                print("Response with Error ~> \(error.localizedDescription)")
-                self.endLogMessage()
-                #endif
             }
         }
         
@@ -304,11 +245,7 @@ public class FKFirebaseKitManager {
             responseHandler.append(ResponseModel(key: item.key, result: result))
         }
         
-        #if DEBUG
-        print("")
-        print("Response ~> \(responseHandler)")
-        endLogMessage()
-        #endif
+        Logger.responseLog(message: responseHandler)
         
         onSuccess(responseHandler)
     }
@@ -316,33 +253,17 @@ public class FKFirebaseKitManager {
     private func configureEndpoint(endpoint: [String]) -> DatabaseReference {
         var innerDatabase: DatabaseReference = self.database
         
-        #if DEBUG
-        startLogMessage()
-        print("Endpoint ~> \(endpoint.joined(separator: "/"))")
-        #endif
+        Logger.endpointLog(endpoint: endpoint.joined(separator: "/"))
         
         for path in endpoint {
             if !path.isEmpty { // path cannot be empty! If it is, app crashes.
                 innerDatabase = innerDatabase.child(path)
             } else {
-                debugPrint("Error @ \(#file) because of endpoint creation. Paths of the endpoint cannot be nil or empty!")
-                endLogMessage()
+                Logger.infoLog(message: "Error @ \(#file) because of nil endpoint parameter. Skipped to prevent crashing.")
             }
         }
         
         return innerDatabase
-    }
-    
-    private func startLogMessage() {
-        print("")
-        print("################ FKFirebaseKit Request ################")
-        print("")
-    }
-    
-    private func endLogMessage() {
-        print("")
-        print("################ FKFirebaseKit Request ################")
-        print("")
     }
     
 }
