@@ -134,7 +134,7 @@ public class FKFirebaseKitManager {
         case starting(Any)
         case ending(Any)
         case equal(Any)
-        case startingAndEnding(Any, Any)
+        case between(Any, Any)
     }
     
     @discardableResult
@@ -189,7 +189,7 @@ public class FKFirebaseKitManager {
                 }
                 
                 break
-            case .startingAndEnding(let startingValue, let endingValue):
+            case .between(let startingValue, let endingValue):
                 if let _ = query {
                     query = query!.queryStarting(atValue: startingValue).queryEnding(atValue: endingValue)
                     
