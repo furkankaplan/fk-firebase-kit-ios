@@ -40,7 +40,7 @@ public class FKAuthenticationManager {
         
         PhoneAuthProvider.provider().verifyPhoneNumber("\(phoneCode)\(phone)", uiDelegate: nil) { (verificationID, error) in
             if let error = error {
-                debugPrint(error.localizedDescription)
+                Logger.errorLog(message: error.localizedDescription)
                 
                 onError(error.localizedDescription)
             }
@@ -55,7 +55,7 @@ public class FKAuthenticationManager {
     
     public func verify(otp verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let verificationID = verificationID else {
-            debugPrint("\(#function) in \(#file) handles verificationID as nil!")
+            Logger.errorLog(message: "\(#function) in \(#file) handles verificationID as nil!")
             return
         }
         
@@ -65,7 +65,7 @@ public class FKAuthenticationManager {
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
-                debugPrint(error.localizedDescription)
+                Logger.errorLog(message: error.localizedDescription)
                 
                 onError(error.localizedDescription)
                 return
