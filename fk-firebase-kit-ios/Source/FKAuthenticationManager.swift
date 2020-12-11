@@ -29,6 +29,8 @@ public class FKAuthenticationManager {
     /// It's deleted just after successfull response of otp verification.
     public var verificationID: String?
     
+    private init() {/* Instance of the class must not be created more than one. */}
+    
     public func verify(phoneNumber: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let phone = phoneNumber else { return }
         guard let languageCode = languageCode else { return }
