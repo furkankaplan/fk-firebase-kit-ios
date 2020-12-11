@@ -213,6 +213,7 @@ isLoggedIn: false
   - Implementation of Cloude Firestore.
   - Expanding authentication options.
   - Better log trace.
+  - Detail the documentation with Firebase iOS SDK setup.
   - Limit queries with a number in order to last or first.
   - Your valuable issues and pull-requests
 
