@@ -24,7 +24,10 @@ Pod::Spec.new do |spec|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description  = "It'a framework simplifying Firebase networking process."
+  spec.description  = <<-DESC
+  FKFirebaseKit is an opensource framework simplifying Firebase iOS SDK's boilerplate code usage and its documentation.
+  It's totally built on the Firebase iOS SDK and wraps it for you by aiming to boost your productivity and improve code quality to let you focus on the real valuable part of your iOS app.
+                      DESC
 
   spec.homepage     = "https://github.com/furkankaplan/fk-firebase-kit-ios"
 
