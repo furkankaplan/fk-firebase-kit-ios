@@ -77,6 +77,31 @@ public class FKAuthenticationManager {
         }
     }
     
+    public var isLoggedIn: Bool {
+        get {
+            guard let _ = Auth.auth().currentUser else { return false }
+            
+            return true
+        }
+    }
+    
+    public var currentUser: User? {
+        get {
+            guard let user = Auth.auth().currentUser else { return nil }
+            
+            return user
+        }
+    }
+    
+    public func logout() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            Logger.errorLog(message: signOutError.localizedDescription)
+        }
+    }
+    
     private func removeVerificationID() {
         self.verificationID = nil
     }
