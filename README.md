@@ -11,16 +11,16 @@
 
 FKFirebaseKit's API is redesigned for developer friendly usage. If you want to create a page listening and listing the user list, it's super easy with FKFirebaseKit.
 
-- user-list -
+<img src="https://github.com/furkankaplan/fk-firebase-kit-ios/blob/v0.1.0/fk-firebase-kit-ios/Screenshot/user-list.png">
 
 Do you want to make an app having phone authentication with OTP? Lets look at that Interaction layer of an example VIPER module for both FKFirebaseKit and Firebase iOS SDK code comparison.
 
-- send-otp -
-- otp-verify -
+<img src="https://github.com/furkankaplan/fk-firebase-kit-ios/blob/v0.1.0/fk-firebase-kit-ios/Screenshot/send-otp.png">
+<img src="https://github.com/furkankaplan/fk-firebase-kit-ios/blob/v0.1.0/fk-firebase-kit-ios/Screenshot/otp-verify.png">
 
 FKFirebaseKit handles the filtering as human-readable. Just look at that code block comparison filtering phones with a match case. You can replace .equal with .prefix to get all phones starting with the prefix wanted.
 
-- equal-match -
+<img src="https://github.com/furkankaplan/fk-firebase-kit-ios/blob/v0.1.0/fk-firebase-kit-ios/Screenshot/equal-match.png">
 
 # Installation
 
