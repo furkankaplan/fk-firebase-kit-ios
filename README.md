@@ -38,6 +38,36 @@ pod 'FKFirebaseKit',  '~> 0.1.0'
 
 # Usage
 
+### Endpoint
+
+You can see an endpoint argument in that all types of request methods given below. Endpoint is the exact child path that we want to send request. It's an String of Array. You can add all children to the String of Array with the same order in the Firebase Realtime Database structure.
+
+Assume you have a database scheme and want to update the user's informations whose key is "1dsa-1dsa-adas".
+
+```
+{
+  "Users" : {
+    "1dsa-1dsa-adas" : {
+      "createdAt" : "2020-06-18T09:55:39Z",
+      "password" : "aaa",
+      "phone" : "+445121231122"
+    },
+    "oajsd-ofc-2131" : {
+      "createdAt" : "2020-06-18T10:00:45Z",
+      "password" : "112233",
+      "phone" : "+91000000000"
+    },
+    "os4bBojJPogdSvtQerydnBN6Leg2" : {
+      "createdAt" : "2020-06-18T08:25:51Z",
+      "password" : "1234",
+      "phone" : "\"+1444444444"
+    }
+  }
+}
+```
+
+In that case, your endpoint must be ["Users", "1dsa-1dsa-adas"]
+
 ### Set Request
 You can save any data which must implement Codable easily. As a default, childByAutoId is false and it's required if you save your objects under a unique key created by Firebase. If childByAutoId is not need, just ignore and don't pass to the method.
 
