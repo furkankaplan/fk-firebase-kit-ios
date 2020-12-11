@@ -29,6 +29,8 @@ public class FKAuthenticationManager {
     /// It's deleted just after successfull response of otp verification.
     public var verificationID: String?
     
+    private init() {/* Instance of the class must not be created more than one. */}
+    
     public func verify(phoneNumber: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let phone = phoneNumber else { return }
         guard let languageCode = languageCode else { return }
@@ -38,7 +40,7 @@ public class FKAuthenticationManager {
         
         PhoneAuthProvider.provider().verifyPhoneNumber("\(phoneCode)\(phone)", uiDelegate: nil) { (verificationID, error) in
             if let error = error {
-                debugPrint(error.localizedDescription)
+                Logger.errorLog(message: error.localizedDescription)
                 
                 onError(error.localizedDescription)
             }
@@ -53,7 +55,7 @@ public class FKAuthenticationManager {
     
     public func verify(otp verificationCode: String?, onCompletion: @escaping(() -> Void), onError: @escaping((_ message: String) -> Void)) {
         guard let verificationID = verificationID else {
-            debugPrint("\(#function) in \(#file) handles verificationID as nil!")
+            Logger.errorLog(message: "\(#function) in \(#file) handles verificationID as nil!")
             return
         }
         
@@ -63,7 +65,7 @@ public class FKAuthenticationManager {
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
-                debugPrint(error.localizedDescription)
+                Logger.errorLog(message: error.localizedDescription)
                 
                 onError(error.localizedDescription)
                 return
@@ -74,6 +76,31 @@ public class FKAuthenticationManager {
             self.removeVerificationID()
         
             onCompletion() // OTP verified.
+        }
+    }
+    
+    public var isLoggedIn: Bool {
+        get {
+            guard let _ = Auth.auth().currentUser else { return false }
+            
+            return true
+        }
+    }
+    
+    public var currentUser: User? {
+        get {
+            guard let user = Auth.auth().currentUser else { return nil }
+            
+            return user
+        }
+    }
+    
+    public func logout() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            Logger.errorLog(message: signOutError.localizedDescription)
         }
     }
     

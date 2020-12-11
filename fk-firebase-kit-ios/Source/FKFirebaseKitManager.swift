@@ -16,41 +16,49 @@ public class FKFirebaseKitManager {
     /// Firebase database shared instance to use it interaction layers of all modules.
     private let database: DatabaseReference = Database.database().reference()
     
-    private init() {/* Instance of class must not be created more than one. */}
+    private init() {/* Instance of the class must not be created more than one. */}
     
     // MARK: - CRUD Requests
     
-    public func request(set data: Codable, endpoint: String..., childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(set data: Codable, endpoint: [String], childByAutoId: Bool = false, onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         var innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
-        
+                
         if childByAutoId {
             innerDatabase = innerDatabase.childByAutoId()
         }
         
+        Logger.requestLog(requestDictionary: data.toDictionary())
+        
         innerDatabase.setValue(data.toDictionary()) { (error: Error?, reference: DatabaseReference?) in
             if let error = error {
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
+                
                 return
             }
+            
+            Logger.succeed()
             
             onSuccess()
         }
     }
     
     @discardableResult
-    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func request<T: Codable>(get type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
                 
         if type == RequestEventEnum.once {
             innerDatabase.observeSingleEvent(of: .value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
             }
         } else if type == RequestEventEnum.listen {
             let observer = innerDatabase.observe(.value) { (data) in
                 self.handleResponse(with: data, onSuccess: onSuccess)
             } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
             }
             
@@ -60,45 +68,48 @@ public class FKFirebaseKitManager {
         return UInt()
     }
     
-    public func request<T: Codable>(update object: T, paths: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
-        var requestDictionary: [String : Any] = [:]
+    public func request<T: Codable>(update object: T, endpoint: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+        let innerDatabase: DatabaseReference = self.configureEndpoint(endpoint: endpoint)
         
-        for item in paths {
-            requestDictionary[item] = object.toDictionary()
-        }
-        
-        if !requestDictionary.isEmpty {
-            self.database.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
+        if let requestDictionary = object.toDictionary() as? [AnyHashable : Any] {
+            innerDatabase.updateChildValues(requestDictionary) { (error: Error?, reference: DatabaseReference) in
                 if let error = error {
+                    Logger.errorLog(message: error.localizedDescription)
                     onError(error.localizedDescription)
                     return
                 }
                 
+                Logger.succeed()
+                
                 onSuccess()
             }
         }
+
     }
     
-    public func request(delete endpoint: String..., onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
+    public func request(delete endpoint: [String], onSuccess: @escaping(() -> Void), onError: @escaping((String) -> Void)) {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         
         innerDatabase.removeValue { (error: Error?, reference: DatabaseReference) in
             if let error = error {
+                Logger.errorLog(message: error.localizedDescription)
                 onError(error.localizedDescription)
                 return
             }
-            
+
+            Logger.succeed()
+
             onSuccess()
         }
     }
     
     // MARK: - Listen
     
-    public func listenChild<T: Codable>(forEvent type: ListenEventEnum, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
+    public func listenChild<T: Codable>(forChild event: ListenEventEnum, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
         var eventType: DataEventType!
         
-        switch type {
+        switch event {
         case .added:
             eventType = .childAdded
         case .changed:
@@ -116,39 +127,124 @@ public class FKFirebaseKitManager {
         return observer
     }
     
-    // MARK: - Sort Requests
+    // MARK: - Sort & Filter Requests
     
-    public func orderBy<T: Codable>(key: String, endpoint: String..., onSuccess: @escaping(([T]) -> Void), onError: @escaping((String) -> Void)) where T: Initializable {
+    public enum FilterTypeEnum {
+        case prefix(String)
+        case starting(Any)
+        case ending(Any)
+        case equal(Any)
+        case between(Any, Any)
+    }
+    
+    @discardableResult
+    public func list<T: Codable>(key: String?, filterBy filteredType: FilterTypeEnum?, type: RequestEventEnum = .once, endpoint: [String], onSuccess: @escaping(([ResponseModel<T>]) -> Void), onError: @escaping((String) -> Void)) -> UInt where T: Initializable {
         let innerDatabase = configureEndpoint(endpoint: endpoint)
-        innerDatabase.queryOrdered(byChild: key).observe(.value) { (data) in
-            self.handleResponse(with: data, onSuccess: onSuccess)
+        
+        guard key != nil && !(key ?? "").isEmpty && filteredType != nil else {
+            Logger.errorLog(message: "Query parameters both key and filter type must not be empty!")
+            onError("Query parameters both key and filter type must not be empty!")
+            return UInt()
         }
+        
+        var query: DatabaseQuery?
+        
+        if let key = key {
+            Logger.infoLog(message: "Query ordered with \(key)")
+            query = innerDatabase.queryOrdered(byChild: key)
+        }
+    
+        if let filteredType = filteredType {
+            switch filteredType {
+            case .prefix(let value):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: value).queryEnding(atValue: value + "\u{F8FF}")
+                    
+                    Logger.infoLog(message: "Query filtered with prefix \(value)")
+                }
+
+                break
+            case .starting(let value):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: value)
+          
+                    Logger.infoLog(message: "Query filtered with starting at value at \(value)")
+                }
+                
+                break
+            case .ending(let value):
+                if let _ = query {
+                    query = query!.queryEnding(atValue: value )
+                    
+                    Logger.infoLog(message: "Query filtered with ending at value at \(value)")
+                }
+                                
+                break
+            case .equal(let value):
+                if let _ = query {
+                    query = query!.queryEqual(toValue: value)
+                    
+                    Logger.infoLog(message: "Query filtered with match case of \(value)")
+                }
+                
+                break
+            case .between(let startingValue, let endingValue):
+                if let _ = query {
+                    query = query!.queryStarting(atValue: startingValue).queryEnding(atValue: endingValue)
+                    
+                    Logger.infoLog(message: "Query filtered with starting and ending at values for \(startingValue),\( endingValue), relatively")
+                }
+                
+                break
+            }
+        }
+        
+        guard query != nil else { return UInt() }
+        
+        if type == RequestEventEnum.listen {
+            let observer = query!.observe(.value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
+                onError(error.localizedDescription)
+            }
+            
+            return observer
+        } else if type == RequestEventEnum.once {
+            query!.observeSingleEvent(of: .value) { (data) in
+                self.handleResponse(with: data, onSuccess: onSuccess)
+            } withCancel: { (error: Error) in
+                Logger.errorLog(message: error.localizedDescription)
+                onError(error.localizedDescription)
+            }
+        }
+        
+        return UInt()
     }
     
     // MARK: - Observers
     
-    public func remove(observer key: UInt) {
-        self.database.removeObserver(withHandle: key)
+    public func remove(observer key: UInt, for endpoint: [String]) {
+        configureEndpoint(endpoint: endpoint).removeObserver(withHandle: key)
     }
     
-    public func logout() {
-        self.database.removeAllObservers()
+    public func removeAll(observer endpoint: [String]) {
+        configureEndpoint(endpoint: endpoint).removeAllObservers()
     }
     
     // MARK: - Helpers
     
-    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping(([T]) -> Void)) where T: Initializable {
-        var responseHandler: [T] = []
+    private func handleResponse<T: Codable>(with data: DataSnapshot, onSuccess: @escaping(([ResponseModel<T>]) -> Void)) where T: Initializable {
+        var responseHandler: [ResponseModel<T>] = []
         
         for item in data.children.allObjects as! [DataSnapshot] {
             let response = item.value as! [String:Any]
-            
             let result: T = response.convertTo(object: T.self)
             
-            responseHandler.append(result)
+            responseHandler.append(ResponseModel(key: item.key, result: result))
         }
         
-        debugPrint(responseHandler)
+        Logger.responseLog(message: responseHandler)
         
         onSuccess(responseHandler)
     }
@@ -156,11 +252,13 @@ public class FKFirebaseKitManager {
     private func configureEndpoint(endpoint: [String]) -> DatabaseReference {
         var innerDatabase: DatabaseReference = self.database
         
+        Logger.endpointLog(endpoint: endpoint.joined(separator: "/"))
+        
         for path in endpoint {
             if !path.isEmpty { // path cannot be empty! If it is, app crashes.
                 innerDatabase = innerDatabase.child(path)
             } else {
-                debugPrint("Error @ \(#file) because of endpoint creation. Paths of the endpoint cannot be nil or empty!")
+                Logger.infoLog(message: "Error @ \(#file) because of nil endpoint parameter. Skipped to prevent crashing.")
             }
         }
         
