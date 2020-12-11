@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A922C2E2257D277000F33693 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922C2E1257D277000F33693 /* Logger.swift */; };
 		A94410DF2523C64700DBE0A6 /* fk_firebase_kit_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = A94410DD2523C64700DBE0A6 /* fk_firebase_kit_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A96DD4EC257BFDC000F05915 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96DD4EB257BFDC000F05915 /* ResponseModel.swift */; };
 		A9BEECA22528BF270096411E /* FKCurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC952528BF270096411E /* FKCurrentUser.swift */; };
 		A9BEECA32528BF270096411E /* FKAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC962528BF270096411E /* FKAuthenticationManager.swift */; };
 		A9BEECA42528BF270096411E /* FKFirebaseKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEEC972528BF270096411E /* FKFirebaseKitManager.swift */; };
@@ -23,9 +25,11 @@
 
 /* Begin PBXFileReference section */
 		9B6436C5D6715D878EEE7FE9 /* Pods-fk-firebase-kit-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fk-firebase-kit-ios.debug.xcconfig"; path = "Target Support Files/Pods-fk-firebase-kit-ios/Pods-fk-firebase-kit-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		A922C2E1257D277000F33693 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A94410DA2523C64700DBE0A6 /* fk_firebase_kit_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fk_firebase_kit_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A94410DD2523C64700DBE0A6 /* fk_firebase_kit_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fk_firebase_kit_ios.h; sourceTree = "<group>"; };
 		A94410DE2523C64700DBE0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A96DD4EB257BFDC000F05915 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 		A9BEEC952528BF270096411E /* FKCurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKCurrentUser.swift; sourceTree = "<group>"; };
 		A9BEEC962528BF270096411E /* FKAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKAuthenticationManager.swift; sourceTree = "<group>"; };
 		A9BEEC972528BF270096411E /* FKFirebaseKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FKFirebaseKitManager.swift; sourceTree = "<group>"; };
@@ -107,6 +111,7 @@
 				A9BEEC9D2528BF270096411E /* Protocols */,
 				A9BEEC962528BF270096411E /* FKAuthenticationManager.swift */,
 				A9BEEC972528BF270096411E /* FKFirebaseKitManager.swift */,
+				A922C2E1257D277000F33693 /* Logger.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -131,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				A9BEEC952528BF270096411E /* FKCurrentUser.swift */,
+				A96DD4EB257BFDC000F05915 /* ResponseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -284,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9BFDFFD2555F1A20043B010 /* OrderByTypeEnum.swift in Sources */,
+				A922C2E2257D277000F33693 /* Logger.swift in Sources */,
 				A9BEECA32528BF270096411E /* FKAuthenticationManager.swift in Sources */,
 				A9BEECA92528BF270096411E /* RequestEventEnum.swift in Sources */,
 				A9BEECA22528BF270096411E /* FKCurrentUser.swift in Sources */,
@@ -291,6 +298,7 @@
 				A9BFDFFA2555EE200043B010 /* ListenEventEnum.swift in Sources */,
 				A9BEECA72528BF270096411E /* DictionaryExtension.swift in Sources */,
 				A9BEECA62528BF270096411E /* EncodableExtension.swift in Sources */,
+				A96DD4EC257BFDC000F05915 /* ResponseModel.swift in Sources */,
 				A9BEECA52528BF270096411E /* FKEndpointConstant.swift in Sources */,
 				A9BEECA82528BF270096411E /* Initializable.swift in Sources */,
 			);
