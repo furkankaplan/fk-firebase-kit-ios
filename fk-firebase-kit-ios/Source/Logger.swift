@@ -19,7 +19,7 @@ struct Logger {
     static func errorLog(message: String) {
         #if DEBUG
         print("")
-        print("Response with Error ~> \(message)")
+        print("Error ~> \(message)")
         endLogMessage()
         #endif
     }
