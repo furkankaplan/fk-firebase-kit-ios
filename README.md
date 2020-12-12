@@ -68,6 +68,37 @@ Assume you have a database scheme and want to update the user's informations who
 
 In that case, your endpoint must be ["Users", "1dsa-1dsa-adas"]
 
+### Response
+
+In FKFirebaseKit, there is a constant response model which is Array of ResponseModel. ResponseModel is a generic Struct including T which is your exact Codable model to decode.
+
+For example, consider your database scheme is like above. Your response must be ```[ResponseModel<UserModel>]``` for that request getting all users.
+
+ResponseModel is so simple and consists of just two parameter. 
+
+```
+public struct ResponseModel<T: Codable>: Codable {
+    public var key: String?
+    public var result: T?
+}
+```
+
+**key:** It's the parent key of your inner object. In this example, it's childByAutoId like 1dsa-1dsa-adas, oajsd-ofc-2131, os4bBojJPogdSvtQerydnBN6Leg2.
+
+**result:** It's the inner and exact object. All result models must be implemented **Codable and Initializable protocols** with **FKFirebaseKit import**. Becasuse Initializable protocol is a part of FKFirebaseKit and required while converting Dictionary which is response type of Firebase to custom Codable model.
+
+```
+import Foundation
+import FKFirebaseKit
+
+struct UserModel: Codable, Initializable {
+    var phone: String?
+    var password: String?
+    var createdAt: Date?
+}
+```
+
+
 ### Set Request
 You can save any data which must implement Codable easily. As a default, childByAutoId is false and it's required if you save your objects under a unique key created by Firebase. If childByAutoId is not need, just ignore and don't pass to the method.
 
